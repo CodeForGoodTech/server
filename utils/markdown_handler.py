@@ -188,6 +188,32 @@ def remove_special_characters(string):
     return re.sub(special_characters, "", string)
 
 
+def extract_description_from_body(body):
+    if not body:
+        return ""
+
+    lines = body.splitlines()
+    description_lines = []
+    in_description = False
+
+    for line in lines:
+        stripped = line.strip()
+        if re.match(r"^##+\s*Description\s*$", stripped, re.IGNORECASE):
+            in_description = True
+            continue
+
+        if in_description:
+            if re.match(r"^##+\s+", stripped):
+                break
+            if stripped:
+                description_lines.append(stripped)
+
+    if description_lines:
+        return "\n".join(description_lines).strip()
+
+    return body.strip()
+
+
 class HeadingRenderer(mistune.HTMLRenderer):
     def __init__(self):
         super().__init__()

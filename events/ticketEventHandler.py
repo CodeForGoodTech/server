@@ -4,7 +4,7 @@
 import aiohttp
 import os, sys, datetime, json
 from shared_migrations.db.server import ServerQueries
-from utils.markdown_handler import MarkdownHeaders
+from utils.markdown_handler import MarkdownHeaders, extract_description_from_body
 from utils.github_api import GithubAPI
 from utils.jwt_generator import GenerateJWT
 from aiographql.client import GraphQLClient, GraphQLRequest
@@ -218,7 +218,7 @@ class TicketEventHandler:
                 updated_at = issue["updated_at"] if issue.get("updated_at") else None
                 if updated_at:
                     updated_at = self.convert_to_datetime(updated_at)
-                description_text = issue.get("description") or issue.get("body", "")
+                description_text = issue.get("description") or extract_description_from_body(issue.get("body", ""))
                 ticket_data = {
                         "title":issue["title"],     #name of ticket
                         "description": description_text,
@@ -339,7 +339,7 @@ class TicketEventHandler:
         updated_at = issue["updated_at"] if issue.get("updated_at") else None
         if updated_at:
             updated_at = self.convert_to_datetime(updated_at)
-        description_text = issue.get("description") or issue.get("body", "")
+        description_text = issue.get("description") or extract_description_from_body(issue.get("body", ""))
         ticket_data = {
                 "title":issue["title"],     #name of ticket
                 "description": description_text,

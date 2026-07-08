@@ -218,9 +218,10 @@ class TicketEventHandler:
                 updated_at = issue["updated_at"] if issue.get("updated_at") else None
                 if updated_at:
                     updated_at = self.convert_to_datetime(updated_at)
+                description_text = issue.get("description") or issue.get("body", "")
                 ticket_data = {
                         "title":issue["title"],     #name of ticket
-                        "description":  markdown_contents,
+                        "description": description_text,
                         "complexity": markdown_contents["Complexity"] if markdown_contents.get("Complexity") else None ,
                         "technology": markdown_contents["Tech Skills Needed"] if markdown_contents.get("Tech Skills Needed") else None, 
                         "status": issue["state"],
@@ -338,9 +339,10 @@ class TicketEventHandler:
         updated_at = issue["updated_at"] if issue.get("updated_at") else None
         if updated_at:
             updated_at = self.convert_to_datetime(updated_at)
+        description_text = issue.get("description") or issue.get("body", "")
         ticket_data = {
                 "title":issue["title"],     #name of ticket
-                "description":  markdown_contents,
+                "description": description_text,
                 "complexity": markdown_contents["Complexity"] if markdown_contents.get("Complexity") else None ,
                 "technology": markdown_contents["Tech Skills Needed"] if markdown_contents.get("Tech Skills Needed") else None, 
                 "status": issue["state"],
